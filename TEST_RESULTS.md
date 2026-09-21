@@ -1,5 +1,7 @@
 # Actual test results
 
+V1.2: five additional targeted recipe groups passed in actual offline Chromium: strict schema/bounds; import and real downloaded JSON round trip with regenerated result equality; invalid/cancel preservation; delayed-read conflict; narrow layout/hidden chooser/no HTTP or page errors. See RECIPE_NOTES.md. Two directed fixes are disclosed there. Earlier suites below are inherited, not rerun for this addition.
+
 2026-09-22, Windows, Chromium 151.0.7922.34 headless.
 
 Six pure-engine groups passed: known probability cases; independent exhaustive ordered enumeration for small bags; mass/support/expectation boundary grid; seeded reproducibility and degenerate cases; invalid input rejection; CSV agreement and tamper rejection.

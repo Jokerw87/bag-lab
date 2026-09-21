@@ -1,4 +1,5 @@
 'use strict';
+// Recipe support is loaded after this synchronous app initialization.
 const $=id=>document.getElementById(id),keys=['red','blue','draws','trials','seed'],canvas=$('chart'),ctx=canvas.getContext('2d');let result=null,revision=0;
 const scaleLabel=document.createElement('label'),sharedScale=document.createElement('input');sharedScale.type='checkbox';sharedScale.id='sharedScale';sharedScale.checked=true;scaleLabel.append(sharedScale,document.createTextNode('两图共用纵轴刻度（便于比较柱高）'));canvas.before(scaleLabel);sharedScale.addEventListener('change',()=>{if(result){revision++;render(result);$('status').textContent='仅调整图表刻度；概率、模拟次数和CSV不变。';}});
 const percent=p=>(p*100).toFixed(2)+'%';
@@ -14,3 +15,4 @@ $('reset').onclick=()=>{if(result&&!confirm('恢复演示参数并清除当前�
 function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 $('csv').onclick=()=>{if(result)download(new Blob([BagLab.csv(result)],{type:'text/csv;charset=utf-8'}),'bag-lab-results.csv');};
 $('png').onclick=()=>{if(!result)return;const token=revision;$('png').disabled=true;canvas.toBlob(blob=>{if(token!==revision)return;if(blob)download(blob,'bag-lab-comparison.png');else $('status').textContent='图片导出失败，请重试。';$('png').disabled=false;},'image/png');};clear();
+const recipeScript=document.createElement('script');recipeScript.src='recipe.js';recipeScript.onload=()=>{const ui=document.createElement('script');ui.src='recipe-ui.js';ui.onerror=()=>{$('status').textContent='参数保存组件未加载；现有实验功能仍可用。';};document.head.append(ui);};recipeScript.onerror=()=>{$('status').textContent='参数保存组件未加载；现有实验功能仍可用。';};document.head.append(recipeScript);
