@@ -9,3 +9,4 @@
  open.onclick=()=>{if(!busy)file.click();};
  file.onchange=async()=>{const selected=file.files[0];file.value='';if(!selected||busy)return;const start=epoch;lock(true);try{if(!/\.json$/i.test(selected.name)||selected.size>8192)throw Error('请选择不超过 8 KiB 的 JSON 文件。');const data=BagRecipe.parse(await selected.text());if(epoch!==start)throw Error('读取期间操作已变化，未载入旧配置。');if(!confirm('替换当前参数并清除结果？请先保存需要保留的参数。')){$('status').textContent='已取消载入，当前内容未改变。';return;}for(const k of keys)$(k).value=data.config[k];sharedScale.checked=data.sharedScale;epoch++;clear();$('status').textContent='参数已载入，请运行实验；文件不含结果。';}catch(e){$('status').textContent='未载入：'+e.message;}finally{lock(false);}};
 })();
+const eventModule=document.createElement('script');eventModule.src='event.js';eventModule.onload=()=>{const ui=document.createElement('script');ui.src='event-ui.js';document.head.append(ui);};document.head.append(eventModule);
